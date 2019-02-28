@@ -7,7 +7,8 @@ app
     .use(bodyParser())
     .use(async ctx => {
         ctx.type = 'application/json';
-        await writeToDb();
+        const {req_id, user_id} = ctx.request.body;
+        await writeToDb(user_id+req_id);
         ctx.body = ctx.request.body;
     });
 
