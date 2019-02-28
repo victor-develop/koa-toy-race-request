@@ -31,7 +31,7 @@ app
                 ctx.body = ctx.request.body;
                 resolve()
             })
-            writeToDb()
+            writeToDb(user_id+req_id)
             .then(() => {
                 pubSub.emit(topic(req_id))
             })
