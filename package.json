@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.411.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1"
   },
