@@ -1,16 +1,17 @@
+'use strict'
+
+require('dotenv').config()
+
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
-require('dotenv').config()
-const writeToDb = require('./write-to-db')
 const app = new Koa();
-
+const writeToDb = require('./write-to-db')
 const pubSub = require('./pub_sub');
 
 const {AWS_REGION, AWS_FIFO_URL: QueueUrl} = process.env
 const AWS = require('aws-sdk');
 AWS.config.update({AWS_REGION});
 const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
-
 
 const topic = (req_id) => `topic_${req_id}`
 
