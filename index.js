@@ -24,7 +24,7 @@ setInterval(async () => {
     const tasks = Messages.map(async m => {
         const {ReceiptHandle, Body} = m
         const {user_id, req_id} = JSON.parse(Body)
-        await writeToDb(user_id+req_id)
+        await writeToDb(req_id +'___'+user_id);
         await sqs.deleteMessage({QueueUrl, ReceiptHandle}).promise()
         pubSub.emit(topic(req_id))
     })

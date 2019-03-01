@@ -11,6 +11,7 @@
   "dependencies": {
     "aws-sdk": "^2.411.0",
     "dotenv": "^6.2.0",
+    "bluebird": "^3.5.3",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "uuid": "^3.3.2"

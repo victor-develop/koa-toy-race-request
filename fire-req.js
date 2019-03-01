@@ -12,7 +12,7 @@ const fire = (req_id, args) => axios({
     }
 }).then(({data, status}) => console.log(data, status))
 
-const request_id = (i) => i + '_' + uuid()
+const request_id = (i) => `${uuid()}___${i}`
 
 const apple = 'apple_' + uuid()
 const banana = 'banana_' + uuid()
