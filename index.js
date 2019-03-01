@@ -3,8 +3,6 @@ const bodyParser = require('koa-bodyparser');
 const writeToDb = require('./write-to-db')
 const app = new Koa();
 
-const key = (...args) => args.join('-')
-
 app
     .use(bodyParser())
     .use(async ctx => {
