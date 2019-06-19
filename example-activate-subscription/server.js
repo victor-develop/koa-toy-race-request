@@ -1,9 +1,11 @@
-const { canUserChangeStatus } = require("./canUserChangeStatus");
-
+const canUserChangeStatus = require("./canUserChangeStatus");
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const User = require('./user');
 const app = new Koa();
+
+// Storage service operation
+
 
 const chargeUser = async () => {
     console.log('apply charge $100')
@@ -14,12 +16,27 @@ app
     .use(async ctx => {
         ctx.type = 'application/json';
         const {status} = ctx.request.body;
-        const current_status = await User.getSubscriptionStatus()
-        if (!canUserChangeStatus(current_status, status)) {
+
+        // ----- Command Section-----
+        const event_id = await User.requestToUpdateSubscriptionStatus(status) // Command
+        // --------------------------
+
+
+        // ----- Query Section -----
+        const events = await User.getEventsUntil(event_id) // Query
+        const [request_success] = events.reduce(
+            ([success, old_status], new_status) =>
+                canUserChangeStatus(old_status, new_status) ? [true, new_status] : [false, old_status]
+        )
+        // --------------------------
+
+        console.log({events, event_id})
+
+        if (!request_success) {
+            console.log('no charge')
             ctx.status = 422
-            ctx.body = {success: false, msg: `cannot change from ${current_status} to ${status}`}
+            ctx.body = {success: false, msg: `cannot change from ${events[event_id - 1]} to ${status}`}
         } else {
-            await User.updateSubscriptionStatus(status)
             if (status === 'active') { 
                 await chargeUser()
             }

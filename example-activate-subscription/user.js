@@ -1,20 +1,34 @@
-'use strict'
+"use strict";
 
-const bluebird = require('bluebird')
+const {delay} = require('bluebird')
 
-let status = 'unactivated'
+const initial_status = "unactivated";
 
-const getSubscriptionStatus = async () => {
-    return status
+// Assumption: append-only stores
+// read-order always the same
+const eventStores = [initial_status]
+
+// Fold it for presentation
+const getEventsUntil = async (event_id) => {
+    const max_id = eventStores.length
+    if (max_id >= event_id) {
+        return eventStores.slice(0, event_id + 1)
+    } else {
+        await delay(500)
+        return getEventsUntil(event_id)
+    }
 }
 
-
-const updateSubscriptionStatus = async (to_status) => {
-    await bluebird.delay(2000)
-    status = to_status
-}
+const requestToUpdateSubscriptionStatus = async to_status => {
+  await delay(2000);
+  // return index of the last element
+  eventStores.push(to_status)
+  const event_id = eventStores.length - 1
+  return event_id
+};
 
 module.exports = {
-    getSubscriptionStatus,
-    updateSubscriptionStatus
-}
+  eventStores,
+  getEventsUntil,
+  requestToUpdateSubscriptionStatus
+};
