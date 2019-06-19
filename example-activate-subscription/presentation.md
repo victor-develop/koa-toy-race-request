@@ -95,3 +95,16 @@ git checkout evt-src-cqrs-cronjob
  - process one by one
     - FIFO queue: process write requests at linear order -> save the result
     - Events sourcing: save write requests at linear order -> process and calculate the result
+---
+
+# Q&A
+
+Can I modify events after creation?
+
+> No
+
+- Source of truth
+- Foundation of the whole system
+- Src of truth wrong? rebuild the whole system (rewrite all the events)
+- Question arise during refactor
+
