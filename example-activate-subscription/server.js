@@ -23,16 +23,12 @@ app
 
 
         // ----- Query Section -----
-        const events = await User.getEventsUntil(event_id) // Query
-        const [request_success] = events.reduce(
-            ([success, old_status], new_status) =>
-                canUserChangeStatus(old_status, new_status) ? [true, new_status] : [false, old_status]
-        )
+        const [success, events] = await User.readRequestResult(event_id)
         // --------------------------
 
         console.log({events, event_id})
 
-        if (!request_success) {
+        if (!success) {
             console.log('no charge')
             ctx.status = 422
             ctx.body = {success: false, msg: `cannot change from ${events[event_id - 1]} to ${status}`}

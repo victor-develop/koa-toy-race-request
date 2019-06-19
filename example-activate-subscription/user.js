@@ -1,5 +1,6 @@
 "use strict";
 
+const canUserChangeStatus = require('./canUserChangeStatus');
 const {delay} = require('bluebird')
 
 const initial_status = "unactivated";
@@ -10,13 +11,22 @@ const eventStores = [initial_status]
 
 // Fold it for presentation
 const getEventsUntil = async (event_id) => {
-    const max_id = eventStores.length
-    if (max_id >= event_id) {
-        return eventStores.slice(0, event_id + 1)
-    } else {
-        await delay(500)
-        return getEventsUntil(event_id)
-    }
+  const max_id = eventStores.length
+  if (max_id >= event_id) {
+      return eventStores.slice(0, event_id + 1)
+  } else {
+      await delay(500)
+      return getEventsUntil(event_id)
+  }
+}
+
+const readRequestResult = async (event_id) => {
+  const events = await getEventsUntil(event_id) // Query
+  const [event_success] = events.reduce(
+      ([success, old_status], new_status) =>
+          canUserChangeStatus(old_status, new_status) ? [true, new_status] : [false, old_status]
+  )
+  return [event_success, events]
 }
 
 const requestToUpdateSubscriptionStatus = async to_status => {
@@ -29,6 +39,6 @@ const requestToUpdateSubscriptionStatus = async to_status => {
 
 module.exports = {
   eventStores,
-  getEventsUntil,
+  readRequestResult,
   requestToUpdateSubscriptionStatus
 };
