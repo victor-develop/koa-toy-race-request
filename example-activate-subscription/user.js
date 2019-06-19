@@ -11,8 +11,7 @@ const eventStores = [initial_status]
 
 // Fold it for presentation
 const getEventsUntil = async (event_id) => {
-  const max_id = eventStores.length
-  if (max_id >= event_id) {
+  if (eventStores.length > event_id) {
       return eventStores.slice(0, event_id + 1)
   } else {
       await delay(500)
