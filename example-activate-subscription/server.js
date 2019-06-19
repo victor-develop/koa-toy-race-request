@@ -1,14 +1,9 @@
+const { canUserChangeStatus } = require("./canUserChangeStatus");
+
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const User = require('./user');
 const app = new Koa();
-
-const canUserChangeStatus = (from_status, to_status) => {
-    if (from_status === 'active' && to_status === 'active') {
-        return false
-    }
-    return true
-}
 
 const chargeUser = async () => {
     console.log('apply charge $100')
