@@ -29,7 +29,6 @@ const readRequestResult = async (event_id) => {
 }
 
 const requestToUpdateSubscriptionStatus = async to_status => {
-  await delay(2000);
   // return index of the last element
   eventStores.push(to_status)
   const event_id = eventStores.length - 1
