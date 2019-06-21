@@ -2,8 +2,6 @@
 marp: true
 ---
 
-# Event Sourcing, CQRS, DDD
-
 ---
 
 # Agenda
@@ -19,8 +17,8 @@ marp: true
 
 ## Start with a real-life problem
 
- - billing.aftership.com
- - user repeatedly subscribe the same plan
+ - billing api service
+ - user fires two requests at the same time, and get double charged
  - demo `git checkout base-case`
 
 ---
@@ -78,7 +76,7 @@ I will answer this after explain `CQRS`
 Demo
 
 
-```
+```js
 git checkout evt-src-cqrs-cronjob
 ```
 
