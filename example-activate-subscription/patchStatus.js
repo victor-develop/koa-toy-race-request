@@ -4,7 +4,7 @@ const axios = require('axios')
 const uuid = require('uuid/v4')
 const url = 'http://localhost:3001'
 
-const activate = (status) => axios({
+const patch = (status) => axios({
     url,
     method: 'patch',
     data: {
@@ -14,4 +14,4 @@ const activate = (status) => axios({
 .then(({data, status}) => console.log({data, status}))
 .catch(({response: {data, status}}) => console.error({data, status}))
 
-module.exports = activate
+module.exports = patch
